@@ -13,7 +13,7 @@ RUN \
   git clone https://github.com/ccin2p3/sequence && \
   echo "**** start building sequence ****" && \
   cd sequence/ && \
-  echo "**** appling patch ****" && \
+  echo "**** applying patch ****" && \
   go mod edit -replace="github.com/mattn/go-sqlite3=github.com/leso-kn/go-sqlite3@v0.0.0-20230710125852-03158dc838ed" && \
   go mod tidy && \
   echo "**** build ****" && \
