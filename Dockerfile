@@ -24,7 +24,8 @@ RUN \
   cd /root-layer/sequence/ && \
   /root-layer/sequence/cmd/sequence_db/sequence_db createdatabase -l /dev/stderr -n info --conn sequence.sdb --type sqlite3 && \
   echo "**** creating initial sequence config ****" && \
-  sed -i 's/connectioninfo = "sequence.sdb"/connectioninfo = "\/etc\/sequence\/sequence.sdb"/g' sequence.toml
+  sed -i 's/connectioninfo = "sequence.sdb"/connectioninfo = "\/etc\/sequence\/sequence.sdb"/g' sequence.toml && \
+  touch sequence.xml
 
 # copy local files
 COPY root/ /root-layer/
@@ -34,10 +35,8 @@ FROM scratch
 
 LABEL maintainer="takalele"
 
-# Create Empty file
-RUN touch /var/lib/syslog-ng/sequence.xml
-
 # Add files from buildstage
 COPY --from=buildstage /root-layer/sequence/cmd/sequence_db/sequence_db /usr/local/bin/sequence
 COPY --from=buildstage /root-layer/sequence/sequence.sdb /etc/syslog-ng/conf.d/sequence.sdb
 COPY --from=buildstage /root-layer/sequence/sequence.toml /etc/sequence/sequence.toml
+COPY --from=buildstage /root-layer/sequence/sequence.xml /var/lib/syslog-ng/sequence.xml
